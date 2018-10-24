@@ -1,0 +1,1472 @@
+####################################################################################################
+##########                                                                                ##########
+##########                         LEARNING PYTHON - 8 WEEKS CLASS                        ##########
+##########                                                                                ##########
+####################################################################################################
+
+
+
++------------------+
+|   Dictionaries   |
++------------------+
+
+List of key:value (mapping)
+Create an empty dictionary: net_device = {}
+Add a value in a dictionary: net_device[‘key’] = ‘value’
+Dictionary has no order (there is ordered dictionary though)
+Trying to address an unknown key ==> error (exception)
+Dictionaries are mutable data structures (2 objects can point to the same zone in the memory)
+Accessing a key in the dictionary without knowing whether it exists:
+dictonary.get(‘key’)
+print(dictonary.get(‘key’)) ==> returns ‘None’ by default if the key does not exist
+print(dictonary.get(‘key’, ‘Prout’)) ==> returns ‘Prout’ if the key lookup fails
+
+Reminder: to check which methods can be used for an object, use dir().
+
+- Create a dictionary:
+
+In [5]: net_device = {}
+
+In [6]: net_device['vendor'] = 'cisco'
+
+In [8]: model = 'asr1k'
+
+In [9]: net_device['model'] = model
+
+In [11]: net_device['ip_addr'] = '10.1.1.1'
+
+In [12]: net_device
+Out[12]: {'vendor': 'cisco', 'model': 'asr1k', 'ip_addr': '10.1.1.1'}
+
+
+- Methods
+
+In [13]: dir(net_device)
+Out[13]:
+['__class__',
+ '__contains__',
+ '__delattr__',
+ '__delitem__',
+ '__dir__',
+ '__doc__',
+ '__eq__',
+ '__format__',
+ '__ge__',
+ '__getattribute__',
+ '__getitem__',
+ '__gt__',
+ '__hash__',
+ '__init__',
+ '__init_subclass__',
+ '__iter__',
+ '__le__',
+ '__len__',
+ '__lt__',
+ '__ne__',
+ '__new__',
+ '__reduce__',
+ '__reduce_ex__',
+ '__repr__',
+ '__setattr__',
+ '__setitem__',
+ '__sizeof__',
+ '__str__',
+ '__subclasshook__',
+ 'clear',
+ 'copy',
+ 'fromkeys',
+ 'get',
+ 'items',
+ 'keys',
+ 'pop',
+ 'popitem',
+ 'setdefault',
+ 'update',
+ 'values']
+
+In [14]:
+
+
+- Empty a dictionary
+
+In [14]: net_device.clear()
+
+In [15]: net_device
+Out[15]: {}
+
+
+
+- Copy a dictionary
+
+In [16]: net_device = {'vendor': 'cisco', 'model': 'asr1k', 'ip_addr': '10.1.1.1'}
+
+In [17]: net_device
+Out[17]: {'vendor': 'cisco', 'model': 'asr1k', 'ip_addr': '10.1.1.1'}
+
+In [18]: net_device2 = net_device.copy()
+
+In [19]: net_device2
+Out[19]: {'vendor': 'cisco', 'model': 'asr1k', 'ip_addr': '10.1.1.1'}
+
+In [20]:
+
+Creating a copy (using copy() function) is not pointing to the same memory zone, it is a completely different dictionary from the source dict.
+
+
+
+- Pop the last item in a dictionary
+
+In [22]: net_device2.popitem()
+Out[22]: ('ip_addr', '10.1.1.1')
+
+In [23]: net_device2
+Out[23]: {'vendor': 'cisco', 'model': 'asr1k'}
+
+In [24]:
+
+
+
+- Pop the specified item from the dictionary
+
+In [25]: net_device2.pop('vendor')
+Out[25]: 'cisco'
+
+In [26]: net_device2
+Out[26]: {'model': 'asr1k'}
+
+In [27]:
+
+
+
+- Update one dictionary based on values from another
+
+In [27]: net_device2 is net_device
+Out[27]: False
+
+In [28]: net_device2['model'] = 'csr1kv' ==> changes the value for the unique key
+
+In [29]: net_device2
+Out[29]: {'model': 'csr1kv'}
+
+In [30]: net_device
+Out[30]: {'vendor': 'cisco', 'model': 'asr1k', 'ip_addr': '10.1.1.1'}
+
+In [31]: net_device2.update(net_device)
+
+In [32]: net_device2
+Out[32]: {'model': 'asr1k', 'vendor': 'cisco', 'ip_addr': '10.1.1.1'}
+
+In [33]:
+
+
+
++------------+
+|   String   |
++------------+
+
+String Formatting (python3):
+
+To print several variables:
+print("{}{}". format(var1, var2))
+
+Some useful tips:
+\n = one line separator
+\t = tabulation
+"=" * 80 = prints "=" 80 times on the same line
+
+To print those variables within columns of 20 characters:
+print("{:20}{:20}". format(var1, var2))
+
+Alignment of the columns:
+print("{:^20}{:^20}". format(var1, var2)) ==> centered
+print("{:>20}{:>20}". format(var1, var2)) ==> align on the right
+print("{:<20}{:<20}". format(var1, var2)) ==> align on the left
+
+Use of named arguments (as opposed to positioned arguments):
+print("{my_ip:<20}{ip_alt:<20}". format(ip_alt=var1, my_ip=var2))
+
+Splitting a string to create a list and print:
+ip_addr = '192.168.1.1'
+octets = ip_addr.split('.')
+print("{:10}{:10}{:10}{:10}". format(octets[0], octets[1], octets[2], octets[3]))
+
+In [3]: ip_addr
+Out[3]: '192.168.1.1'
+
+In [4]: octets
+Out[4]: ['192', '168', '1', '1']
+
+In [5]: print("{:10}{:10}{:10}{:10}". format(octets[0], octets[1], octets[2], octets[3]))
+192       168       1         1
+
+An alternative to the previous print statement:
+print("{:10}{:10}{:10}{:10}".format(str(octets))) ==> the interpreter will output an error (IndexError) because it is expecting 4 elements
+print("{:10}{:10}{:10}{:10}".format(*octets)) ==> '*' is treated as a sequence of elements (everything that is in the list (ordered))
+
+A deprecated alternative (but still in current production deployments):
+print("%s %s" % (ip_addr1, ip_addr2))
+
+An alternative to print strings is to use formatted strings (only available 3.6+):
+print(f"{ip_addr1}") ==> can reference a variable directly in a string
+print(f"My IP address is: {ip_addr1}") ==> can also add comments within this formatted string:
+print(f"My IP addresses are: {ip_addr1:^20} {ip_addr2:^20}") ==> can also use the formatting based on columns
+
+
+
++-------------+
+|   Numbers   |
++-------------+
+
+Typical operators:
+7 + 2 = 9 ==> Addition
+7 - 2 = 5 ==> Substraction
+7 * 2 = 14 ==> Multiplication
+7 / 2 = 3.5 ==> Division
+7 ** 2 = 49 ==> Power of
+7 % 2 = 1 ==> Modulo ()
+
+In python3, a division gives the exact result of a division (float), while python2 only gives an interger.
+We can use the // operator to look like python2 in python3 (7 // 2 = 3)
+
+Convert a float to an integer:
+int(num1)
+
+Convert an integer to an float:
+float(num1)
+
+Round a float:
+num1 = 3.12345
+round(num1, 3) ==> rounds the number with 3 digits
+
+Weird output for floats:
+.1 + .2 = 0.30000000000000004 ==> This number is because in memory we store things as binaries (just an artifact)
+
+Incrementing a value:
+i = 1
+i = i + 1
+i += 1 ==> different way to increment the value
+i -= 1 ==> different way to decrease a value
+
+
+
++-----------+
+|   Files   |
++-----------+
+
+Open a file:
+f = open("filename.txt") ==> just open the files, does not output anything
+
+Read a file:
+output = f.read() ==> only once, once done, we are at the end of the file. One reading is a big string that contains everything in the file.
+print(output) ==> Prints out everything from the file in one line
+
+Close a file
+f.close()
+
+Read a file line by line:
+f.readline() ==> reads the file, line by line, everytime we call this command, it is reading the next line
+
+Go back the origin of the file:
+f.seek(0)
+
+Read all the lines in one go:
+f.readlines() ==> outputs a list of all the lines in the file
+
+Other way to do this:
+output = f.read()
+output.splitlines() ==> slight difference, the other option retains the new lines ("\n")
+
+Another proper option to open a file and manipulate it:
+with open("show_version.txt") as f:
+    output = f.read()
+==> This option is proper in python and automatically closes the files once we exit the loop block
+
+Open a file and write in it:
+f = open("new_file.txt", mode="w")
+f.write("Some stuff\n") ==> Once we define what we want to write in the file, we need to flush the file to effectively write data in the file
+f.flush() ==> flushes data from the buffer and writeon the file
+
+When opening a file twice, the second time overwrite the content written previously, "mode=a" can be an option to append content, but it's almost never used
+
+
+
++-----------+
+|   Lists   |
++-----------+
+
+A list can be a list of any kind of element (integer, float, string, etc.), called 'items'. Items can be accessed by it's interger index, starting at 0. 
+
+Addressing an element in the list:
+my_list[0] ==> first element in the list
+my_list[1] ==> second element in the list
+my_list[2] ==> third element in the list
+my_list[0][1] ==> second element in a list that contains another list (my_list = [['cat', 'rabbit'], ['dog', 'elephant', 'girafe'], 10])
+
+Replace an element in a list:
+my_list[2] = 'new_element'
+
+Lenghts of the list:
+len(my_list)
+
+Add new elements at the end of the list:
+my_list.append("something") ==> append this new string at the end of the existing my_list. my_list is changed (not a new element).
+
+Concatenate two lists:
+my_list + [2, 3.0, "this_string"] ==> this concatenates 2 lists, but does not change the my_list object
+my_list = my_list + [2, 3.0, "this_string"] ==> this concatenates 2 lists and change the my_list object
+
+Extend a list:
+my_list.extend([2, 10]) ==> extends the current my_list object and modifies it right away
+
+Removing an element of the list:
+my_list.pop() ==> removes the last element from the list and output it on terminal/interpreter
+my_list.pop(0) ==> removes the first element from the list and output it on terminal/interpreter
+my_list.pop(-1) ==> same as the first one
+
+Counting the number of instances of an element in a list:
+my_list.count("something") ==> returns the number of occurences
+
+Find the index of an element (first index):
+my_list.index('something')
+
+Remove a given element in a list:
+my_list.remove('something') ==> removes the first occurence of 'something'
+del my_list[2]
+
+Read a list of element in a list:
+f = open("filename.txt")
+output = f.readlines()
+my_list[0:5] ==> this will display lines from the beginning up to 4, the last one of the list is never included
+my_list[:5] ==> same as before
+my_list[5:] ==> this will display lines from line 5 to the end
+my_list[-5:] ==> this will display lines from line -5 to the end
+
+Show the ID of a list (or largely an object) in memory:
+id(my_list)
+
+Point two lists to the same object in memory:
+new_list = my_list ==> both of them are pointing to the same ID in memory
+new_list.append("something") ==> will be added to new_list but also to my_list (same pythin object)
+
+IMPORTANT NOTE: Lists and Dictionaries are MUTABLE (as opposed to a string or a tuple which is unmutable)
+
+Join list elements to form a string:
+ipv6 = '2001:0db8:85a3:0000:0000:8a2e:0370:7334'
+words = ipv6.split(":") ==> splits the current string in list elements using the ":" separator
+":".join(words) ==> re-joins list elements in one string by adding the ":" separator
+
+Check if something is or is not in a list
+'value' in ['var1', 'var2', 'var3'] ==> retrun True or False
+
+
+
++------------+
+|   Tuples   |
++------------+
+
+Tuple are declared as a list:
+my_tuple = ('whatever', 2, 23.0)
+
+Most of the list methods are available to address elements in a tuple, but none of the one who modify the tuple
+
+
+
++---------------+
+|   Arguments   |
++---------------+
+
+sys.argv (from sys library) is used to store arguments of a function in a list
+
+To parse arguments, two typical libraries are argparse or click
+
+
+
++-------------+
+|   Linters   |
++-------------+
+
+A linter checks your code and make sure it is compliant with recommendations
+2 main linters: pylint, pycodestyle (previously pep8) ==> installable with pip
+Checks indentation errors, spaces, etc. and give an overall note of the code quality ==> does not check whether the program works though!
+pylama is a wrapper to pycodestyle and is frequently used in the field
+
+
+
++------------------+
+|   Conditionals   |
++------------------+
+
+if expression: ==> first condition we want to match
+	block
+	block
+elif expression: ==> if first condition does not match
+	block
+	block
+else: ==> if none of them match
+	block
+
+
+ 
++-------------------+
+|   Boolean Logic   |
++-------------------+
+
+Boolean logic is nothing more than 'and' and 'or' operators
+
+Other data types can be converted to booleans:
+- String: all are True except the no string ('')
+- Integer: 0 is False, any other is True
+- Lists: empty list is False, any item in the list is True
+
+Easy to use in conditional statements
+a = 'whatever'
+if a: ==> We don't need more here as there is a boolean value associated to the varibale 'a' (string type)
+	print("Hello")
+
+Another option to evaluate a boolean expression
+my_val = 10
+a = 'whatever' if my_val > 2 else 'something'
+
+Type 'None':
+a = None
+type(None) ==> gives us a NoneType type. It has a False boolean value... :)
+None is the default return value, so if there's no explicit return statement in a function, it will return None for the value
+
+
+
++---------------+
+|   For Loops   |
++---------------+
+
+For a list, the for loop does not need an increment and naturally ends when there's no item in the list any more
+for x in some_container:
+	block
+
+Enumerate with tuples:
+for my_var in enumerate(ip_addr_list):
+	print(my_var)
+==> The result for each iteration is a tuple of the index of the value and the value itself (0, '10.1.1.1') or (2, '10.3.3.3')
+
+Unpack a tuple and assign to variables:
+my_var = (0, '10.1.1.1')
+var1, var2 = my_var ==> var1 will get 0, var2 will get '10.1.1.1'
+
+Using this in a for loop:
+for i, ip_addr in enumerate(ip_address_list):
+	print(i)
+	print(ip_addr)
+
+WARNING!! Do not try to loop over and modify a list at the same time, it can be super dangerous...
+
+break statement immediately break out a loop:
+for ip in some_list:
+	print(ip)
+	break ==> ends the loop
+
+continue statement immediately jumps up to the for loop without going through the rest of the block
+for ip in some_lists:
+	print("Hello")
+	if ip == '10.2.2.2':
+		continue
+	print(ip)
+
+pass statement is a no-operation in a for loop
+for ip in some_lists:
+	pass
+
+range is a useful function:
+for my_var in range(10)
+
+else statement in a for loop is equivalent to a "no-break" (not used that much though)
+for ip in some_list:
+	print(ip)
+	if ip == '8.8.8.8':
+		break
+else:
+	print("Something else")
+
+For loops also can loop over the character of a string:
+sammy = 'Sammy'
+for letter in sammy:
+	print(letter) ==> each letter of Sammy will be printed out, one per line
+
+Printing a list of list in a for loops:
+list_of_lists = [['hammerhead', 'great white', 'dogfish'],[0, 1, 2],[9.9, 8.8, 7.7]]
+for list in list_of_lists:
+    print(list) ==> will print each list one per line
+
+
+
++-----------------+
+|   While Loops   |
++-----------------+
+
+A while loop works as long it does not hit a break (break statement or end of a sequence)
+while expression:
+	code_block
+
+
+while condition is True:
+	print("Hello")
+	print(...)
+	if google_dns1 == '8.8.8.8':
+		break
+
+
++-------------------+
+|   Disctionaries   |
++-------------------+
+
+Data are not stored in a sequential order (as opposed to lists)
+Dictionaries are mutable data structures
+
+Creation of a dictionary:
+net_device = {}
+
+Adding a key:value pair to a dict:
+net_device['ip_addr'] = '10.1.1.1' ==> First method
+var1 = 'vendor'
+net_device[var1] = 'cisco' ==> Second method
+
+Access a key and retrieve its value:
+net_device['device_type'] ==> gives 'ios' as the output
+net_device.get('model') ==> returns a default value (by default None, do print to check this value)
+
+Change a value:
+net_device['device_type'] = 'junos'
+
+Create a copy of dict:
+net_device2 = net_device.copy() ==> Not the same object in memory
+
+Pop a key:value:
+net_device.pop('model') ==> returns the value for this key and pops it from the dict
+
+Update a dict from another:
+net_device.update(net_device2) ==> Will replace value from keys in both dict
+
+Loop over a dictionary:
+for value in net_device.values() ==> Will give us the values for each key
+	print(value)
+for key, value in net_device.items() ==> Will give us the keys and the values in a tuple
+	print(key)
+	print(value)
+
+
+
++----------+
+|   Sets   |
++----------+
+
+Set is new container
+No reundant elements (all unique)
+A set looks like a dictionary but without keys
+
+Create a set:
+set(my_ip_addresses) ==> my_ip_addresses is a list in this case, but the set will eliminate all the duplicate entries
+
+Union of 2 sets:
+set1 | set2 ==> will give all the unique elements in both sets
+set1.union(set2) ==> Other option to do the same
+
+Intersection of 2 sets:
+set1 & set2 ==> will give us what is common to both sets
+set1.intersection(set2) ==> Other option to do the same
+
+Substraction of 2 sets:
+set1 - set2 ==> remove from set1 what was in set2 common with set1
+set2 - set1 ==> remove from set2 what was in set1 common with set2
+set1.difference(set2) ==> Other option to do the same
+
+Symmetric Difference of 2 sets
+set1 ^ set2 ==> remove what's common to both and keep the addition of the unique elements in both sets
+set1.symmetric_difference(set2) ==> Other option to do the same
+
+
+
++----------------+
+|   Exceptions   |
++----------------+
+
+Purpose is to catch an exception in the program and gracefully handle it
+
+Dealing with exception:
+try:
+	code_block
+except exception_name:
+	code_block
+
+Re-raise an exception message:
+try:
+	code_block
+except exception_name:
+	code_block
+	raise ==> this lets the program catch the exception but still raise it again to show what we got
+
+Manipulating the exception with a variable:
+my_dict = {}
+try:
+	my_dict['ip_addr']
+except KeyError as e:
+	print(e.__class__) ==> shows us the class of the exception (KeyError here)
+	print(str(e)) ==> prints out the key that raised that exception
+	print("Caught exception, printed info") ==> prints out a friendly message to the terminal
+
+Catching multiple exceptions:
+my_dict = {}
+my_list = []
+try:
+	my_list[0]
+	my_dict['ip_addr']
+except (KeyError, IndexError):
+	print("Any Message") ==> will output the same message for both
+except KeyError:
+	print("xyz")
+except IndexError:
+	print("abc") ==> will output a different message for each exception
+
+Running some code regardless of whether an exception occurred or not:
+my_dict = {}
+try:
+	my_dict['ip_addr']
+except KeyError:
+	print("xyz")
+finally:
+	print("This is always executed, exception or not") ==> This code will be executed anyway... :)
+
+Catch any exception in a generic way (ok for quick and dirty code/program):
+my_dict = {}
+try:
+	my_dict['ip_addr']
+	print("Whatever")
+except Exception: ==> catches any exception (almost), but will potentially mask the real issue from the exception
+	print("xyz")
+
+
+
++-------------------------+
+|   Regular Expressions   |
++-------------------------+
+
+Some sort of way to define a ruleset for searching through text pattern. Example given below are not encompassing all regex we can use in Python, so worth adding more resources to work on this.
+
+Well know regular expressions:
+abc...		Letters
+123...		Digits
+\d			Any Digit
+\D			Any Non-digit character
+.			Any Character
+\.			Period
+[abc]		Only a, b, or c
+[^abc]		Not a, b, nor c
+[a-z]		Characters a to z
+[0-9]		Numbers 0 to 9
+\w			Any Alphanumeric character
+\W			Any Non-alphanumeric character
+{m}			m Repetitions
+{m,n}		m to n Repetitions
+*			Zero or more repetitions
++			One or more repetitions
+?			Optional character
+\s			Any Whitespace
+\S			Any Non-whitespace character
+^...$		Starts and ends
+(...)		Capture Group
+(a(bc))		Capture Sub-group
+(.*)		Capture all
+(abc|def)	Matches abc or def
+
+Library to import:
+import re
+
+Methods that can be used to search:
+match()		==> Determine if the regex matches at the beginning of the string
+search()	==> Scan through a string, looking for any location where this regex matches
+findall()	==> Find all substrings where the regex matches, and returns them as a list
+finditer()	==> Find all substrings where the regex matches, and returns them as an iterator
+
+Search a regex in a string:
+ip_addr = "10.1.1.1"
+re.search(r".", ip_addr) ==> send an output like this if that matches: <_sre.SRE_Match object; span=(0, 1), match='1'>
+re.search(r".", ip_addr).group(0) ==> '.group(0)' will give us exactly what we did match, here '1', would have been '10.' if we had matched on r"..."
+re.search(r".+", ip_addr) ==> matches any character, as many time as you can, be greedy. Output is <_sre.SRE_Match object; span=(0, 8), match='10.1.1.1'>. Adding .group(0) would print the IP address to the screen
+re.search(r".*", ip_addr) ==> same as before, but one difference though, it would match the 0 character re.search(r".*", ""), output: <_sre.SRE_Match object; span=(0, 0), match=''>
+re.search(r"^.+$", ip_addr) ==> any character at the beginning of the line, and it has to go all the way to the end of the line (or of end of the string)
+
+ip_addr = "10.220.100.1"
+re.search(r"\d", ip_addr) ==> means we have to match on a digit, here '1', would have been '10' if we had matched on r"\d\d". If we were doing r"\d\d\d", we would not have '10.' as the result (by using the .group(0)), we would have '220' as we would match the first compatible pattern with r"\d\d\d". If we force using the 'anchor' ('^'), it would just fail as we don't have three concurrent digits at the beginning of the line.
+re.search(r"^\d+", ip_addr) ==> greedy style, would give us any digits at the beginning of the line (here '10')
+re.search(r"\d+$", ip_addr) ==> greedy style, would give us any digits at the end of the line (here '1')
+
+ip_addr = "     10.220.100.1    "
+re.search(r"^\s+", ip_addr) ==> greedy style, would give us any space at the beginning of the line (here '     ')
+re.search(r"^\s+\d+", ip_addr) ==> greedy style, would give us any space at the beginning of the line and whatever sequence of digits coming next (here '     10')
+re.search(r"^\s+\S+", ip_addr) ==> greedy style, would give us any space at the beginning of the line and any non whitespace coming next (here '     10.220.100.1'). The space at the end is not showing here as it is whitespace and \S+ will only match on NON whitespace.
+
+We can create our own character class, by combining these special characters:
+ip_addr = "     10.220.100.1    "
+re.search(r"^\s+[\d\.]", ip_addr) ==> Any single digit or character after whitespace (here '     1')
+re.search(r"^\s+[\d\.]+", ip_addr) ==> Any digit or character after whitespace (here '     10.220.100.1'), the whitespace at the end is not matching this expression
+
+We can also create regex and save the results that match these regex:
+ip_addr = "     10.220.100.1    "
+re.search(r"^\s+(\S+)", ip_addr) ==> Any space at the beginning of the line and any non whitespace coming next (here '     10.220.100.1', by using group(0))
+re.search(r"^\s+(\S+)", ip_addr).group(1) ==> will give us what's been saved in the first set of parenthesis, group(2) would be helpful if there were another set of parenthesis
+re.search(r"^\s+(\S+)", ip_addr).groups() ==> will give us what's been saved in all set of parenthesis by using a tuple
+
+Why do we use raw string (r"") at all in Regular Expressions? Using raw strings means "turn off the Python special meaning of characters"
+
+Save regular expressions matches in variables:
+with open("show_version.txt") as f:
+	output = f.read()
+show_ver = output.splitlines() ==> Split the output into a list of lines
+line = show_ver[0] ==> line 1 only
+import re
+re.search(r"^C.*$", line) ==> match as there is a line of characters, group(0) returns the entire match; group(1), group(2) return nothing as there is no parenthesis (they basically do not exist)
+re.search(r"^Cisco.*, Version (\S+),.*$", line) ==> match and group(0) returns the entire match, group(1) would be what's between parenthesis (here '15.4(2)T1')
+os_version = re.search(r"^Cisco (.*), Version (\S+),.*$", line).group(2) ==> returns in the variable the output of group(2)
+
+Save regular expressions matches in dictionaries:
+with open("show_version.txt") as f:
+	output = f.read()
+show_ver = output.splitlines() ==> Split the output into a list of lines
+line = show_ver[0] ==> line 1 only
+import re
+re.search(r"^Cisco (.*), Version (?P<os_version>\S+),.*$", line) ==> match ok and now we can look at the groupdict() method
+re.search(r"^Cisco (.*), Version (?P<os_version>\S+),.*$", line).groupdict() ==> retruns a dictionary with 'os_version' as the key and the matched regex as the value (here '15.4(2)T1')
+
+Other option to save regular expressions matches in dictionaries:
+match = re.search(r"^Cisco (.*), Version (?P<os_version>\S+),.*$", line) ==> do not print anything on the screen
+match.groupdict() ==> retruns a dictionary {'os_version': '15.4(2)T1'}
+
+How to disbale the greedy behavior?
+re.search(r"^Cisco (.*), ", line).group(1) ==> still matches the whole string after 'Cisco ' all the way to the last ", " found in the string
+re.search(r"^Cisco (.*?), ", line).group(1) ==> changes (with the '?') to find the minimum amount/set of characters (so would stop at the first ', ' found)
+
+Find a Serial Number from a string:
+re.search(r"^Processor board ID (.*)$", output) ==> does not match because this expression is not at the end of the line or the file, but in the middle.
+re.search(r"^Processor board ID (.*)$", output, flags=re.M) ==> changing to "on a line basis" and return a match (.group(1) will give us the Serial number only). We can obviously put this in a variable and explore... 'M' like 'Multiple Lines'
+
+Changing the behavior of the '.*' to match on all lines:
+re.search(r"^Cisco.*", output).group(0) ==> only gives us the first line by default (if there are more than one line, like a show version). .* does not match new lines...
+re.search(r"^Cisco.*", output, flags=re.DOTALL).group(0) ==> changing the behavior of .* to include new lines.
+
+Ignore capitalization in Regular Expressions:
+re.search(r"^Cisco.*", output, flags=re.I) ==> 'I' like Ignore
+
+Other methods in the re library:
+re.split(r"^-------------.*$", output, flags=re.M) ==> matches this expression and we split the file in a list based on how many times it saw this pattern in the output. We can use a [0] or [1] as it is a list to look up which item it is for this index
+re.sub(r"^-------------.*$", '###### SOMETHING ######', output, flags=re.M) ==> matches this expression and replace it by what's been given as a replacement expression. Very useful when we do regex parsing and we get some variations. It's easier to change the variations and rewrite the output to make it be a standardized format and then use your regular expression parser to find what you need.
+re.findall ==> useful when you are searching for a known well defined pattern that occurs a bunch of times in a given output (email addresses, ip address, etc.)
+
+Additional examples of Regular Expressions:
+...\. ==> matches any sequence of 4 characters ending with a '.'
+[cmf]an ==> matches can, man, fan but not dan or ran or pan
+[^b]og ==> matches any first character except the 'b' character
+[A-C].. ==> matches any 3-letters word starting with A, B or C
+waz{3,5}up ==> matches the z at least 3 times and up to 5 times (wazzzup, wazzzzup and wazzzzzup). [wxy]{2,6} will match either w, x or y twice and up to 6 times
+aa+b*c+ ==> matches at least two 'a's, zero or more 'b's, and at least one 'c'
+ab?c ==> matches either the strings "abc" or "ac" because the b is considered optional
+\d\.\s+abc ==> matches 1 digit with a period, whitespace and then 'abc'
+^(\d+)x(\d+) ==> matches 1280x720 or 1920x1600
+
+
+
++---------------+
+|   Functions   |
++---------------+
+
+Functions are reusable pieces of programs. They allow you to give a name to a block of statements, allowing you to run that block using the specified name anywhere in your program and any number of times. This is known as calling the function.
+
+Defining a function:
+def function_name():
+	code_block
+
+Call a function:
+function_name() ==> '()' means we invoke the function, if no '()', it just creates a reference to the function but does not call the function
+
+A function always returns a value, even though it is NoneType, but it always returns a value
+
+Pass an argument to a function:
+def function_name(arg1): ==> when we call that function, an argument is mandatory
+
+Pass multiple arguments:
+def function_name(arg1, arg2, arg3): ==> when we call that function, we need to pass 3 arguments, not less, not more
+	code_block
+
+Call a function with named arguments:
+function_name(arg1='value', arg3='value', arg2='value') ==> in this case, the position of the argument does not matter, the name defines which argument is called.
+function_name(arg1, arg3='value', arg2='value') ==> we can also mix and match positional arguments and named arguments, BUT, positional have to be first (before any of the named arguments)
+
+Default values for a function:
+def function_name(arg1=, arg2='value', arg3='value') ==> if nothing is given as an argument for arg2 and arg3, the default value will be used when the function is called, arg1 is mandatory though in this case.
+
+Using a list to pass arguments:
+def function_name(arg1, arg2, arg3):
+	code_block
+my_list = ['value1', 'value2', 'value3']
+funtcion_name(*my_list) ==> pass the elements of my_list as a sequence of values. The '*' tells python to treat this list a sequence of elements and not a single list
+
+Using a dictionary to pass arguments:
+def function_name(arg1, arg2, arg3):
+	code_block
+my_dict = ['arg1': 'value1', 'arg2': 'value2', 'arg3': 'value3'] ==> arg1, arg2, arg3 have to match exactly the name of the arguments in the function definition
+funtcion_name(**my_dict) ==> '**' tells python to convert this as the key:value pair, don't treat this as a single element
+
+Be careful when passing a mutable object into a function as it can be modified inside and outside of a function...
+
+Create a function that can take any number of arguments:
+def function_name(arg1=5, *arg2, **arg3): ==> all positional arguments provided are collected as a tuple called 'param' and then all keyword arguments (arg=value) are collected as a dictionary called 'param'
+
+Global and Local variables (also called 'scope'):
+They are different and variables inside a function are only local to the function. When a variable is not found in the local namespace (so inside the function), it will look at the variable in the global namespace (so outside of the function). If it does not find the variable at all (neither in the local namespace nor in the global), it will generate an exception. Local and Global variables can have the same name, without being the same.
+ip_addr2 = '192.168.1.1'
+def print_ip(ip_addr, username='admin', password)
+	print(ip_addr)
+	print(ip_addr2) ==> this variable is not passed as an argument, so it will look at the global namespace to find this variable, then in python's built-ins
+	print(username)
+	print(password)
+print_ip('10.10.10.10', 'pass123')
+
+Make a function change a global variable by using the same name:
+x = 50
+def my_function():
+	global x ==> This tells Python that the name used in this function will change the value of x in the global namespace/scope
+	print('x is', x)
+	x = 2
+	print('Changed global x to', x)
+
+my_function()
+print('Value of x is', x)
+Output:
+$ python my_program.py
+x is 50
+Changed global x to 2
+Value of x is 2
+
+Documentation Strings - DocStrings (also applies to classes and modules):
+def print_max(x, y):
+    '''Prints the maximum of two numbers.
+
+    The two values must be integers.'''
+    code_block
+
+The convention followed for a docstring is a multi-line string where the first line starts with a capital letter and ends with a dot. Then the second line is blank followed by any detailed explanation starting from the third line. You are strongly advised to follow this convention for all your docstrings for all your non-trivial functions.
+
+Access the DocString:
+print(my_function.__doc__)
+help(my_function) ==> pydoc is an alternative to this, but calls the help command
+
+
++-------------+
+|   Classes   |
++-------------+
+
+Functions give us a first level of reusability, but Classes (with methods) give us a second level of reusability
+
+Usually we have a set of functions (that are doing somehting) and shared states (like ssh connection for example), and that's a situation where classes are very helpful. In Classes we call this set of functions: methods. A second thing that Classes gives us is a way of sort of building a hierarchy, so we can share code easier (child class based upon the parent class).
+
+Synthax for Classes:
+class MyClass(object): ==> no "_" in the name, capital letter for each word and 'object' between parenthesis is for backward compatibility with Python 2 and 3 (not required in Python3)
+	def __init__(self): ==> method, looks like a function and '__init__' is a special method that is gonna get called to initialize the object that we want with a special argument 'self'. 'self' is a reference to the object that has been created in memory.
+
+
+
++-------------+
+|   Modules   |
++-------------+
+
+Used to share code that's in one python program to a different python program, this is where python modules and packages come in to play. A module is just a python file that we can import and use (with a function definition inside)
+
+Import a module (method 1):
+touch my_module.py (+ add a function definition in it)
+import my_module ==> imports all functions of this module into the current python program
+dir(my_module) ==> gives us the list of pre built-in functions and functions we have created within this module
+
+Import a module (method 2):
+from my_module import my_function ==> gives us direct access to the function my_function without naming the module itself
+
+Check where a module has been imported:
+my_module.__file__
+
+Check the version of a module that has been imported:
+my_module.__version__
+
+Usage of function within a module:
+my_module.my_function(arg1, arg2) ==> applicable if the full module is imported (import my_module)
+my_function(arg1, arg2) ==> applicable if the function from the module is imported (from my_module import my_function)
+
+Python uses a list of directory where it looks for objects. This list is stored in the sys.path. sys.path is looking first at the local directory. To check where sys.path is looking at, issue 'import sys' and then 'pprint(sys.path)'.
+
+Create our own Python module:
+To create our own module, just create a python file in the same directory OR in the sys.path directory. Then same rule apply, 'import my_module' or 'from my_module import xyz' (xyz can be a function, a dictionary, a list, any data structure actually)
+
+
+
++--------------+
+|   Packages   |
++--------------+
+
+The idea of creating Packages is to store several python programs in one single location, mainly modules. Packages are another hierarchy to organize modules.
+
+Create a package:
+1/ create a directory (my_package), 2/ create an empty file __init__.py ==> that gives us the option to do an import my_package from another python program to have access to the python modules in it (ie. python files)
+
+
+
++-------------------------------------------+
+|   List Comprehension / Lambda functions   |
++-------------------------------------------+
+
+The idea of a list comprehension is to convert a list from one form to another
+
+Example of a List Comprehension:
+my_list = [1, 2, 3, 4, 5, 6]
+my_list2 = [x**2 for x in  my_list] ==> we should read this as a "for x in my_list, we'll do x**2"
+
+There are also data structures that can be converted to another form: set comprehensions, generator comprehensions.
+
+The lambda is a one line disposable function
+
+Example of lambda function:
+f = lambda x: x**2
+print(f(10)) ==> this is equivalent to th following code block below:
+def my_function(x):
+	return x**2
+print(my_function(10))
+
+It's not mandatory to use them, but sometimes it's helpful to have them (like a function you're not gonna use twice and we want to optimize)
+
+
+
++---------------------+
+|   Python Debugger   |
++---------------------+
+
+This is a library called pdb (import pdb)
+
+Enable debug traces in a given point in a program:
+pdb.set_trace() ==> will stop the program execution at this point to see where we are at
+python -m pdb my_function.py
+
+Show where we are with the debugger:
+(Pdb) list . ==> the '->' shows the next statement that is going to be executed after
+(Pdb) list 1, 20 ==> shows the program from line 1 to 20 and the arrow still shows what's gonna be executed next
+
+Going step-by-step with the debugger:
+(Pdb) step ==> executes each command step by step in the program
+
+Going up and down in the call stack:
+(Pdb) up
+(Pdb) down
+(Pdb) next ==> similar to s, but it goes to the next line in the program execution (does not go under functions) and keeps it high level (global context)
+
+Print to examine values passed to a variable:
+(Pdb) pp ==> equivalent to pretty print (pprint) for Pdb
+
+Insert a breakpoint in a program:
+(Pdb) break my_program.py:5 ==> Breakpoints can be placed at certain line numbers by following the syntax of <program_file>:<line_number>. When we insert a breakpoint, the debugger assigns a number to it. The numbers assigned to breakpoints are successive integers that begin with the number 1, which you can refer to when working with breakpoints.
+
+List the breaking points in a program:
+(Pdb) break
+
+Disable and remove a breaking point:
+(Pdb) disable 1 ==> disable breakpoint 1 insrted in the program
+(Pdb) clear 1 ==> completely remove the breaking point 1
+
+Command		Short 	What it does
+args		a		Print the argument list of the current function
+break		b		Creates a breakpoint (requires parameters) in the program execution
+continue	c.cont	Continues program execution
+help		h		Provides list of commands or help for a specified command
+jump		j		Set the next line to be executed
+list		l		Print the source code around the current line
+next		n		Continue execution until the next line in the current function is reached or returns
+step		s		Execute the current line, stopping at first possible occasion
+pp			pp		Pretty-prints the value of the expression
+quit/exit	q		Aborts the program
+return		r		Continue execution until the current function returns
+
+Another way to debug, you can print statements, which is very valid way of doing it... :)
+
+
+
++-------------+
+|   Netmiko   |
++-------------+
+
+Paramiko is a standard SSH library for server-to-server connections, Netmiko built on top of Paramiko with abstraction for network devices (some complexity removed). 40-45 vendor devices supported.
+
+Import Netmiko library:
+from netmiko import Netmiko ==> Netmiko is a class
+
+Connect to a device:
+net_conn = Netmiko(host='host1', username='username', password=getpass(), device_type='cisco_ios') ==> to find out names for supported device_type, use a wrong one (like 'foo' for instance) and execute the program, the excetption will give us the list of supported device types.
+
+Gracefully disconnect from a device:
+net_conn.disconnect()
+
+Connect to a device using a dictionary:
+my_device = {
+	'host': 'host',
+	'username': 'username',
+	'password': getpass(),
+	'device_type': 'cisco_ios'
+}
+net_conn = Netmiko(**my_device)
+
+Get the prompt of a device:
+print(net_conn.find_prompt())
+
+Send the "enable" to a Cisco device:
+password = getpass()
+my_device = {
+	'host': 'host',
+	'username': 'username',
+	'password': password,
+	'secret': password, <== Required to send the enable secret password when prompted for it
+	'device_type': 'cisco_ios'
+}
+net_conn = Netmiko(**my_device)
+net_conn.send_command_timing("disable") ==> Used to revert back to priv 1
+net_conn.enable() ==> Send the command "enable" and provide the enable secret password when prompted
+
+Send a show command to a device:
+net_conn.send_command("command") ==> send_command is looking for part of the trailing router prompt to determine that the command is done (some kind of screen scraping)
+net_conn.send_command_timing("command") ==> send_command_timing is similar to send_command but it's time based, it tries to figure out how long it should wait
+
+Get some help on netmiko methods:
+help(net_conn.send_command) ==> provides details and optional parameters
+
+Validate an output based on a regular expression:
+net_conn.send_command("command", expect_string=r'RE') ==> 'RE' can be any regex we want
+
+Responding to a prompt from the device:
+output = net_conn.send_command_timing("delete flash:file.txt")
+if 'confirm' in output:
+	output += net_conn.send_command_timing("\n") ==> Send 'Enter' if "output" was seen in the prompt and validate the deletion of the file
+
+Delay command execution (for one command):
+net_conn.send_command("copy run start", delay_factor=2) ==> tells Netmiko to multiply all delays within the code by 2 (it's a multiplier). Valid for send_command_timing as well.
+
+Delay all commands execution:
+my_device = {
+	'host': 'host',
+	'username': 'username',
+	'password': password,
+	'secret': password,
+	'device_type': 'cisco_nxos',
+	'global_delay_factor': 2 ==> will delay all command executed on this device, using a multiplier of 2 (for sleep, wait, etc. commands)
+}
+
+Change the output we get from commands from string to list:
+The output from send_command is big string, which is pretty undesirable because we need to do some parsing with regex. This has been created by network to code (NTC) and it's available on their GitHub profile. We need to install ntc templates to make it work, in our home directory under the name "ntc-templates" (~/ntc-templates/).
+output = net_conn.send_command("command", use_textfsm=True) ==> changes the output from one big string to a list of chunks of that big string, and list elements are dictionaries
+
+Install NTC templates:
+(into home directory) git clone https://github.com/networktocode/ntc-templates
+
+Supported commands:
+Check on the website at https://github.com/networktocode/ntc-templates/blob/master/templates/index the index of supported commands + gives us the abbreviated commands that exist
+
+Change the default directory for NTC templates:
+mv ntc-templates ntc-templates_whatever
+export NET_TEXTFSM=~/ntc-templates_whatever/templates ==> will set the environment variable and netmiko will look at this variable after checking the home directory (the path has to be the full path, not relative). Supported on netmiko 2.x and beyond.
+
+Send a config command to a device:
+net_conn.send_config_set("command")
+cfg_commands = ['logging buffered 10000', 'no logging console']
+net_conn.send_config_set(cfg_commands) ==> will take the list of commands as parameters + enter config mode and exit config mode alone
+
+Commit a config change on a Juniper device:
+output = net_conn.commit() ==> will do the equivalent of a commit in junos
+
+Exit from config mode on a Juniper device:
+output = net_conn.exit_config_mode()
+
+Send config commands from a file to a device:
+output = net_conn.send_config_from_file("config_file.txt")
+
+Turn on logging for Netmiko (documented at https://github.com/ktbyers/netmiko/COMMON_ISSUES.md):
+import logging
+logging.basicConfig(filename="logfile.txt", level=logging.DEBUG)
+logger = logging.getLogger("netmiko") ==> will write a file "logfile.txt" in the local directory with all the logs inside, very detailed, very useful.
+
+Another option to send raw commands to a device:
+net_conn.write_channel("show ip arp\n") ==> this command send the string as is without further intelligence.
+output = net_conn.read_channel() ==> get the ouptut of this command. Warning!! In a python script, we may need to put a sleep for couple of seconds as the python program is gonna be faster than the router
+print(output)
+
+
+
++------------+
+|   Jinja2   |
++------------+
+
+Context:
+Variables -----> Configuration Template -----> Output Files
+Jinja2 is the main python template library
+
+Example with template configuration in the python program/file:
+import jinja2
+bgp_vars = {
+	'local_as': 20,
+	'peer1_ip': '1.1.1.1',
+	'peer1_asn': 1,
+	'network1': '10.10.1.0/24',
+	'network2': '10.10.2.0/24',
+	'network3': '10.10.3.0/24'
+}
+bgp_template = '''
+feature bgp
+router bgp {{ local_as }} ==> variables are always expressed with double curly braces
+  address-family ipv4 unicast
+    network {{ network1 }}
+    network {{ network2 }}
+    network {{ network3 }}
+  neighbor {{ peer1_ip }} remote-as {{ peer1_asn }}
+    update-source loopback1
+    ebgp-multihop 2
+    address-family ipv4 unicast
+'''
+t = jinja2.Template(bgp_template)
+print(t.render(bgp_vars))
+
+Example with template configuration in an external file:
+template_file = 'nxos_bgp.j2' ==> this (the 3 lines) replaces the 'bgp_template' we had in our python file in the example before. The file looks exactly like the template we had before.67
+with open(template_file) as f:
+	bgp_template = f.read()
+
+Create for loops inside a jinja2 template:
+The python program my_config_generator.py looks like:
+import jinja2
+networks = ['10.10.1.0/24', '10.10.2.0/24', '10.10.3.0/24']
+bgp_vars = {
+	'local_as': 20,
+	'peer1_ip': '1.1.1.1',
+	'peer1_asn': 1,
+	'networks': networks ==> calling the list declared earlier
+}
+template_file = 'nxos_bgp.j2'
+with open(template_file) as f:
+	bgp_template = f.read()
+t = jinja2.Template(bgp_template) ==> 't' like template
+print(t.render(bgp_vars))
+The jinja2 template nxos_bgp.j2 looks like:
+feature bgp
+router bgp {{ local_as }}
+  address-family ipv4 unicast
+    {% for route in networks %} ==> this will loop over the 'networks' list defined in the python program/file
+    network {{ route }}
+    {% endfor %}
+  neighbor {{ peer1_ip }} remote-as {{ peer1_asn }}
+    update-source loopback1
+    ebgp-multihop 2
+    address-family ipv4 unicast
+==> the output that it renders contains spaces per line, which is tricky to deal with with Jinja2 templates. Extra spaces that we add in our configuration templates are included in the output, that's why we get these extra space in our config file.
+
+Remove extra spaces in the output in jinja2 for loops:
+The jinja2 template nxos_bgp.j2 looks like:
+feature bgp
+router bgp {{ local_as }}
+  address-family ipv4 unicast
+    {%- for route in networks %} ==> check that the '-' is next to the '%' character
+    network {{ route }}
+    {%- endfor %} ==> check that the '-' is next to the '%' character
+  neighbor {{ peer1_ip }} remote-as {{ peer1_asn }}
+    update-source loopback1
+    ebgp-multihop 2
+    address-family ipv4 unicast
+==> Adding a '-' (minus) next to the '%' character in the for loops will remove spaces from the end of the previous line up to before the curly brace.
+
+Insert and use a jinja2 conditional:
+The python program my_config_generator.py looks like:
+import jinja2
+networks = ['10.10.1.0/24', '10.10.2.0/24', '10.10.3.0/24']
+bgp_vars = {
+	'local_as': 20,
+	'peer1_ip': '1.1.1.1',
+	'peer1_asn': 1,
+	'peer1_ipv6': True, ==> New variable that we add and we will use a conditional to derive the associated configuration
+	'networks': networks
+}
+template_file = 'nxos_bgp.j2'
+with open(template_file) as f:
+	bgp_template = f.read()
+t = jinja2.Template(bgp_template)
+print(t.render(bgp_vars))
+The jinja2 template nxos_bgp.j2 looks like:
+feature bgp
+router bgp {{ local_as }}
+  address-family ipv4 unicast
+    {%- for route in networks %}
+    network {{ route }}
+    {%- endfor %}
+  neighbor {{ peer1_ip }} remote-as {{ peer1_asn }}
+    update-source loopback1
+    ebgp-multihop 2
+    address-family ipv4 unicast
+    {%- if peer1_ipv6 %} ==> conditional statement, where we could also have an if, elif and else
+    address-family ipv6 unicast
+    {%- endif %}
+==> Of course if the conditional is set to False, we won't see the 'address-family ipv6 unicast' in the final configuration file.
+
+Use a CSV file to store variables:
+The csv file bgp_variables.csv looks like:
+local_as,peer1_ip,peer1_asn,peer1_ipv6,networks
+20,1.1.1.1,1,True,10.10.1.0/24 10.10.2.0/24 10.10.3.0/24 ==> notice that the networks are separated by a space, not a comma, they all belong to the same column in this csv file
+The python program my_config_generator.py looks like:
+import jinja2
+import csv ==> csv library for python that give us the option to import a csv file as a dictionary
+csv_file = "bgp_variables.csv"
+with open(csv_file) as f:
+	read_csv = csv.DictReader(f)
+	for bgp_vars in read_csv: ==> we loop over the dictionary varibales
+		networks = bgp_vars['networks'] ==> add the 3 networks separated by a space in a 'networks' variable
+		networks = networks.split() ==> we split this string of networks into a list of networks
+		bgp_vars['networks'] = networks ==> we reinject this 'networks' variable into the existing dictionary, but now as a list ({a, b, c, [10.10.1.0/24, 10.10.2.0/24, 10.10.3.0/24]})
+		template_file = 'nxos_bgp.j2'
+		with open(template_file) as f:
+			bgp_template = f.read()
+		t = jinja2.Template(bgp_template)
+		print(t.render(bgp_vars))
+==> if we add more rows in the csv file, it will create as many iterations of the config template as we have rows in the csv file
+
+Loop over a dictionary of dictionaries and/or dictionary of lists with Jinja2:
+import jinja2
+bgp_vars = {
+	"routers": {
+		'rtr1': '10.10.10.1',
+		'rtr2': '10.10.10.2',
+		'rtr3': '10.10.10.3',
+		'rtr4': '10.10.10.4',
+	},
+	"ip_list": [
+		'10.1.1.1',
+		'172.16.1.1',
+		'192.168.1.1'
+	]
+}
+any_template = ''' ==> jinja2 template in the python program (undesirable, but for the example...)
+{%- for router_name, ip_addr in routers.items() %} ==> we loop over items in the 'routers' dictionary like what we would do in python
+{{ router_name }} >>> {{ ip_addr }}
+{%- endfor %}
+{%- for ip_addr in ip_list %} ==> we loop over items in the 'ip_list' list like what we would do in python
+{{ ip_addr }}
+{%- endfor %}
+'''
+t = jinja2.Template(any_template)
+print(t.render(bgp_vars))
+
+Nest for loops in a jinja2 template:
+{%- for router_name, ip_addr in routers.items() %}
+	{{ router_name }} >>> {{ ip_addr }}
+	{%- for ip_addr in ip_list %} ==> Nested for loop
+	{{ ip_addr }}
+	{%- endfor %}
+{%- endfor %}
+
+Reference a key in a dictionary in a jinja2 template:
+{{ routers['rtr1'] }} ==> will print out only the ip address of rtr1
+{{ routers.rtr1 }} ==> other option where we use the dot notation to reference that key
+
+
+
++----------+
+|   YAML   |
++----------+
+
+Context:
+When we need to take data in a program and send them to a file or to another computer, it has to be serialized into a byte stream. This process is called "Serialization". A bunch of protocols can accomplish this: YAML, JSON or XML or even Google Protocol Buffers. One thing that makes YAML different, YAML is highly readable for a human (as opposed to XML or other markup languages). So YAML is a good choice when a human is gonna be involved. Heavily used in Ansible or Salt. YAML = Yet Another Markup Language (some nuances appparently). YAML documents can have a .yml or .yaml extension.
+
+Building a yaml file:
+Always start with the string "---"
+
+Creating a list in yaml:
+To create a list in a yaml file, we need to use "- " for each element
+---
+- 10.1.1.1 == this is a string
+- 10.2.2.2
+- 10.3.3.3
+
+Creating a dictionary in yaml:
+To create a dictionary in a yaml file, we need to use a variable and its corresponding value
+---
+rtr1: 10.1.1.1
+rtr2: 10.2.2.2
+rtr3: 10.3.3.3
+rtr4: This is a string key ==> could be quoted because there's a special character that would be interpreted by python
+
+Use a yaml file in a python program:
+import yaml
+filename = "my_devices.yml"
+with open(filename) as f:
+	output = yaml.load(f)
+print(output) ==> print out the content of the yaml file as a python data structure (list or dictionary)
+
+Represent boolean in yaml:
+---
+rtr1: True
+rtr2: False
+rtr3: yes ==> will return 'True' value in python
+rtr4: no ==> will return 'False' value in python
+rtr5: on ==> will return 'True' value in python
+rtr6L off ==> will return 'False' value in python
+
+More complex data structures in yaml:
+---
+rtr1:
+  ip_addr: 10.1.1.1
+  username: admin
+  password: whatever
+  device_type: juniper_junos
+  bgp_peers:
+    - 10.3.3.3
+    - 10.4.4.4
+    - 10.5.5.5
+rtr2:
+  ip_addr: 10.2.2.2
+  username: cicso
+  password: whatever
+  device_type: cisco_nxos
+  bgp_peers: [10.6.6.6, 10.7.7.7] ==> this notation looks like a python list, but wihtout quotes for the elements (called 'compressed yaml form')
+rtr3: {ip_addr: 10.3.3.3} ==> this notation looks like a python dictionary, but wihtout quotes for the items
+==> This becomes a dictionary of dictionaries in python. The indentation is what makes the structure of the dictionary.
+
+Create a yaml file using a python program:
+import yaml
+my_dict = {
+	'rtr1': {
+		'bgp_peers': ['10.3.3.3', '10.4.4.4', '10.5.5.5'],
+		'device_type': 'juniper_junos',
+		'ip_addr': '10.1.1.1',
+		'password': 'whatever',
+		'username': 'admin'
+	}
+	'rtr2': {
+		'bgp_peers': ['10.6.6.6', '10.7.7.7'],
+		'device_type': 'cisco_nxos',
+		'ip_addr': '10.2.2.2',
+		'password': 'whatever',
+		'username': 'cisco'
+	}
+	'rtr3': {
+		'ip_addr': '10.3.3.3',
+	}
+}
+filename = "outfile.yml"
+with open(filename, "w") as f:
+	output = yaml.dump(my_dict, f) ==> build the yaml file based on the dictionary, using a mix of the expanded form and compressed form of yaml by default
+
+Change the flow style in yaml (expanded or compressed):
+output = yaml.dump(my_dict, f, default_flow_style=False) ==> 'False' means 'expanded format', 'True' means 'compress format', which looks much more like we what have straight in python or JSON
+
+
+
++----------+
+|   JSON   |
++----------+
+
+Context:
+JSON is another serialzation protocol (taking data in a program sent to a file or a computer using a byte stream). This format is less readable than YAML, but it looks like python format.
+So why do care about JSON at all? Because JSON is a format that is used by many network device APIs, Arista eAPI, Cisco NX-API (in certain format), Pluribus, etc. JSON is what is used in the payload when we query a network device. JSON = Java Script Object Notation. JSON documents can have a .jsn or .json extension.
+
+Building a yaml file:
+No constraint
+
+Use a json file in a python program:
+import json
+filename = "my_devices.json"
+with open(filename) as f:
+	output = json.load(f)
+print(output) ==> print out the content of the json file as a python data structure (list or dictionary)
+
+Create a json file using a python program:
+import json
+my_dict = {
+	'rtr1': {
+		'bgp_peers': ['10.3.3.3', '10.4.4.4', '10.5.5.5'],
+		'device_type': 'juniper_junos',
+		'ip_addr': '10.1.1.1',
+		'password': 'whatever',
+		'username': 'admin'
+	}
+	'rtr2': {
+		'bgp_peers': ['10.6.6.6', '10.7.7.7'],
+		'device_type': 'cisco_nxos',
+		'ip_addr': '10.2.2.2',
+		'password': 'whatever',
+		'username': 'cisco'
+	}
+	'rtr3': {
+		'ip_addr': '10.3.3.3',
+	}
+}
+print(my_dict) ==> prints out the dictionary in python format
+print(json.dumps(my_dict)) ==> prints out the dictionary in json format
+filename = "outfile.json"
+with open(filename, "w") as f:
+	output = json.dump(my_dict, f, indent=4) ==> 'indent=4' specifies the indentation that we want
+
+Differences between JSON and Python formats:
+- dictionaries and lists look the same in both formats
+- single quotes in python, double quotes in json
+- 'False' for a boolean in python, 'false' for a boolean in json
+
+
+
++--------------------------------------+
+|   Managing Complex Data Structures   |
++--------------------------------------+
+
+When we query a network device, we can receive a very large data structure with a bunch of dictionaries of dictionaries or dictionaries of lists, or lists of lists, etc. We need to learn how to deal with that and there are a few tips that we can use:
+- The first character tells us if this is a list or dictionary data structure
+- The type(var) helps to find out which data structure is used
+- We need to pill back layer by layer, start with the outer most layer and then go inward until we get what we're trying to retrieve
+- In case of a dictionary, check the keys of the upper most dictionary by using my_dict.keys()
+- Then we can explore the first key to analyse what's inside this key, might be a string, boolean, list or dictionary
+- We can repeat the same process and get the keys of that inner dictionary by using the .keys() method on the first key of the outter dictionary
+- When we get a list, we typically need to check the lentgh of the list using len()
+
+
+
++---------+
+|   PIP   |
++---------+
+
+Context:
+PIP is a package manager for python. The main repo for pip is PyPI (https://pypi.python.org/pypi). PIP is available in MAC, Linux and Windows. PIP is coupled with python and frequently, there's a discrepency between the python used to install packages (using pip) and the one that is used when running a program. Ideally, couple python and pip together by using 'python -m pip ...', it helps to make sure that both versions match when installing a package and running a program.
+
+List all packages installed:
+pip list
+
+Install a specific version of a package:
+pip install netmiko==2.0.1 ==> will uninstall any potential netmiko module already installed and will install the version specified
+
+Upgrade a package:
+pip install --upgrade netmiko ==> upgrade the package itself, BUT, also upgrade all dependencies
+
+Install a packge from a Git repo:
+pip install git+https://github.com/ktbyers/netmiko.git@develop ==> @develop is the branch for that github repository
+
+Uninstall a package:
+pip uninstall
+
+
+
++-------------------------+
+|   Virtual Environment   |
++-------------------------+
+
+Context:
+A virtual environment is basically a sandbox with its own packages, modules, etc. It copies the minimum libraries and packages needed to run, it's like a fully clean environment. Virtual Environments are also very helpful when you want to validate some dependencies for a given program.
+
+Create a new virtual environment:
+virtualenv-3.6 -p /usr/bin/python36 venv1 ==> creates a new virtual environment in the local directory under a new folder 'venv1' and it copies the minimum libraries needed
+
+Enter/Activate a virtual environment:
+source venv1/bin/activate ==> the prompt is gonna change
+
+Exit/Deactivate a virtual environment:
+deactivate
+
+
